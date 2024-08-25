@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21BDS0039</title>
+</head>
+<body>
+    <h1>Bajaj Finserv Health Challenge</h1>
+    <label for="jsonInput">Enter JSON Input:</label><br>
+    <textarea id="jsonInput" rows="4" cols="50"></textarea><br><br>
+    <button onclick="submitData()">Submit</button>
+
+    <h2>Response:</h2>
+    <pre id="responseOutput"></pre>
+
+    <script>
+        function submitData() {
+            const input = document.getElementById('jsonInput').value;
+
+            try {
+                const jsonData = JSON.parse(input);
+                fetch('http://127.0.0.1:5000/bfhl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jsonData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('responseOutput').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+            } catch (e) {
+                alert("Invalid JSON format");
+            }
+        }
+    </script>
+</body>
+</html>
 
