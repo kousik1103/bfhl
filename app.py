@@ -1,16 +1,16 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 @app.route('/bfhl', methods=['POST'])
 def process_data():
     data = request.json.get('data', [])
-
     # Initialize arrays
     numbers = []
     alphabets = []
     highest_lowercase = []
-
     for item in data:
         if item.isdigit():
             numbers.append(item)
@@ -19,17 +19,15 @@ def process_data():
             if item.islower():
                 if not highest_lowercase or item > highest_lowercase[0]:
                     highest_lowercase = [item]
-
     response = {
         "is_success": True,
-        "user_id": "your_full_name_ddmmyyyy",  # Replace with your actual full name and DOB
-        "email": "your_college_email@domain.com",  # Replace with your college email
+        "user_id": "your_full_name_ddmmyyyy",
+        "email": "your_college_email@domain.com",
         "roll_number": "21BDS0039",
         "numbers": numbers,
         "alphabets": alphabets,
         "highest_lowercase_alphabet": highest_lowercase
     }
-
     return jsonify(response), 201
 
 @app.route('/bfhl', methods=['GET'])
